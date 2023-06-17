@@ -4,7 +4,7 @@ pipeline {
     agent any
 
     environment {
-        NEXT_ENV = "dev"
+        IMAGE_NAME = 'alfredasare/devops-demo-app:next-app'
     }
 
     stages {
@@ -12,6 +12,7 @@ pipeline {
             steps {
                 script {
                     echo "Installing dependencies"
+                    sh "npm ci"
                 }
             }
         }
@@ -20,6 +21,7 @@ pipeline {
             steps {
                 script {
                     echo "Running tests"
+                    sh "npm run test:ci"
                 }
             }
         }
@@ -28,6 +30,7 @@ pipeline {
             steps {
                 script {
                     echo "Building our app"
+                    sh "npm run build"
                 }
             }
         }
