@@ -35,13 +35,39 @@ pipeline {
             }
         }
 
-        stage("deploy app") {
-            when {
-                expression {
-                    NEXT_ENV == 'prod'
+        stage('set current version') {
+            steps {
+                script {
+                    def version = sh(script: "node -p \"require('./package.json').version\"", returnStdout: true).trim()
+                    echo "Current version: ${version}"
+                    env.CURRENT_VERSION = version
                 }
             }
+        }
 
+        stage('update current version') {
+            steps {
+                script {
+                    def new_version = sh(script: "npm version patch --no-git-tag-version", returnStdout: true).trim()
+                    echo "Updated version: ${new_version}"
+                    env.NEW_VERSION = new_version
+                }
+            }
+        }
+
+        stage("build Docker Image") {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'docker-credentials', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
+                        sh "docker build -t ${IMAGE_NAME}-${NEW_VERSION} ."
+                        sh "echo $PASS | docker login -u $USER --password-stdin"
+                        sh "docker push ${IMAGE_NAME}-${NEW_VERSION}"
+                    }
+                }
+            }
+        }
+
+        stage("deploy app") {
             steps {
                 script {
                     echo "Deploying our app"
