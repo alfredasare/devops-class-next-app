@@ -3,6 +3,10 @@
 pipeline {
     agent any
 
+    environment {
+        NEXT_ENV = "dev"
+    }
+
     stages {
         stage("install dependencies") {
             steps {
@@ -29,6 +33,12 @@ pipeline {
         }
 
         stage("deploy app") {
+            when {
+                expression {
+                    NEXT_ENV == 'prod'
+                }
+            }
+
             steps {
                 script {
                     echo "Deploying our app"
