@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage("install dependencies") {
             steps {
-                scripts {
+                script {
                     echo "Installing dependencies"
                 }
             }
@@ -14,7 +14,7 @@ pipeline {
 
         stage("test") {
             steps {
-                scripts {
+                script {
                     echo "Running tests"
                 }
             }
