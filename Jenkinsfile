@@ -70,7 +70,7 @@ pipeline {
         stage("deploy app") {
             steps {
                 script {
-                    echo "Deploying our app"
+                    echo "Deploying our app..."
                 }
             }
         }
