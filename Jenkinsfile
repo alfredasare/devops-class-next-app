@@ -71,6 +71,16 @@ pipeline {
             steps {
                 script {
                     echo "Deploying our app..."
+                    echo "Deploying to our EC2 instance"
+                    def shellCmd = "bash ./server-cmds.sh ${IMAGE_NAME}-${NEW_VERSION}"
+                    def ec2Instance = "ubuntu@44.201.74.15"
+                    def home = "/home/ubuntu"
+
+                    sshagent(['next-app-server']) {
+                        sh "scp -o StrictHostKeyChecking=no server-cmds.sh ${ec2Instance}:${home}"
+                        sh "scp -o StrictHostKeyChecking=no docker-compose.yaml ${ec2Instance}:${home}"
+                        sh "ssh -o StrictHostKeyChecking=no ${ec2Instance} ${shellCmd}"
+                    }
                 }
             }
         }

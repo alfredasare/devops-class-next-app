@@ -1,0 +1,7 @@
+version: '3.8'
+services:
+  next-app:
+    restart: always
+    image: ${IMAGE}
+    ports:
+      - "3000:3000"
