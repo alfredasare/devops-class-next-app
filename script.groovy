@@ -3,7 +3,7 @@ def test() {
 }
 
 def deploy() {
-    echo "deploying version ${params.VERSION}"
+    echo "deploying version..."
 }
 
 return this
