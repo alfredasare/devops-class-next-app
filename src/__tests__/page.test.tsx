@@ -13,7 +13,7 @@ describe('Home', function () {
     it('has a link to the NextJS docs', () => {
         render(<Home />)
 
-        const docsLink = screen.getByRole('link', { name: /Docs/i });
+        const docsLink = screen.getByRole('link', { name: /Documentation/i });
         expect(docsLink).toHaveAttribute('href', 'https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app');
         expect(docsLink).toHaveAttribute('target', '_blank');
         expect(docsLink).toHaveAttribute('rel', 'noopener noreferrer');
